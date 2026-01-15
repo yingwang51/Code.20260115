@@ -20,7 +20,7 @@
 
 - `life.form.integrated`: Integrated life form of the species 
 
-- `cultivation.lin2019`: Cultivation status determined according to* Catalogue of Cultivated Plants in China*（yes or no）
+- `cultivation.lin2019`: Cultivation status determined according to *Catalogue of Cultivated Plants in China*（yes or no）
 
 - `nat.extent`: Naturalization extent (number of regions where plants are naturalized)
 
@@ -77,6 +77,7 @@
 **6.Rcode for Figures_1,S2 and Table_1,S1.R**
 
 #Statistical analysis using hurdle models, including model fitting, likelihood ratio tests (LRTs), and visualization of results
+
 
 
 
