@@ -4,7 +4,7 @@
 
 ### data
 
-**1. 20250330.native_plant.matched.cultivated_plant_DO.csv：** 
+**1. 20250330.native_plant.matched.cultivated_plant_DO.csv：**
 
 **Description**: This dataset constitutes the core data for analysing the global naturalisation patterns of native Chinese plants. It integrates species naturalization information, cultivation information, life forms, native range size, and cultivation  both within and outside China.
 
@@ -48,7 +48,7 @@
 
 - `number_tdwg3`: The total number of unique TDWG level-3 regions outside of China where the taxon is recorded as cultivated according to WorldCuP
 
-**3. References_WorldCuPSources.csv***
+**3. References_WorldCuPSources.csv**
 
 **Description**: This file contains the comprehensive list of 365 bibliographic references and data sources used to compile the cultivation extent information for Chinese native plants within the World Checklist of Cultivated Plants (WorldCuP) database.
 
@@ -77,6 +77,7 @@
 **6.Rcode for Figures_1,S2 and Table_1,S1.R**
 
 #Statistical analysis using hurdle models, including model fitting, likelihood ratio tests (LRTs), and visualization of results
+
 
 
 
