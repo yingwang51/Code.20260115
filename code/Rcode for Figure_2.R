@@ -75,7 +75,7 @@ return(sem.plot)
 # ==========================================================================
 # Loading naturalization data
 # ==========================================================================
-model_nat <- read.csv("./resutls/model_nat.tidy02.v202501.csv")
+model_nat <- read.csv("./resutls/Table.S2.csv")
 model_nat
 
 #
@@ -141,6 +141,7 @@ ggexport(sem_models01, filename = "./resutls/Figure.2.png",
          height = 3000,
          pointsize = 12,
          res = 300)
+
 
 
 
