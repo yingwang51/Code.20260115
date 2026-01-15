@@ -127,14 +127,6 @@ sem_models.nat.woody <- sem_models.nat$model_nat.woody
 library(patchwork)
 library(ggpubr)
 
-#all_sp
-sem_models.nat.all_sp
-ggexport(sem_models.nat.all_sp, filename = "./resutls/sem_models.nat.all_sp.png",
-         width = 4000,
-         height = 3000,
-         pointsize = 12,
-         res = 300)
-
 #life forms_sp
 sem_models01 <-
   sem_models.nat.annual_herb +
@@ -149,6 +141,7 @@ ggexport(sem_models01, filename = "./resutls/sem_models01.png",
          height = 3000,
          pointsize = 12,
          res = 300)
+
 
 
 
