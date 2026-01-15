@@ -74,9 +74,10 @@
 
 #correlation analysis (Native Range Size, Cultivation within/outside China)
 
-**6.Rcode for Figures_1,S2 and Table_S1.R**
+**6.Rcode for Figures_1,S2 and Table_1,S1.R**
 
-#Hurdle model analyse
+#Statistical analysis using hurdle models, including model fitting, likelihood ratio tests (LRTs), and visualization of results
+
 
 
 
