@@ -3,7 +3,6 @@
 #  Analyze scale.WorldCuP.n.tdwg3 (cultivation range outside china)
 #  Analyze scale.planting.China.tdwg3 (cultivation range within China)
 # ==========================================================================
-
 # Clear memory
 cat("\014")
 rm(list = ls())
@@ -315,8 +314,6 @@ plot_add_parts01 <- function(pred_data, x_var) {
   
 }
 
-
-
 # Generate three inset plots
 plots_zoom_native01   <- plot_add_parts01 (pred_native,"scale.native.global.tdwg3")
 plots_zoom_worldcup01 <- plot_add_parts01 (pred_worldcup, "scale.WorldCuP.n.tdwg3")
@@ -344,8 +341,6 @@ plot_response_worldcup02 <- plot_response_worldcup +
                     xmin = -1, xmax = 1,  
                     ymin = 120, ymax = 220)
 
-
-
 # Combine plots
 plots04 <-
   plot_response_native02 +
@@ -363,7 +358,6 @@ plots04 <-
                "perennial herb" = "Perennial herb.",
                "woody" = "Woody")
   )
-
 
 # Save the plot
 ggexport(plots04, filename = "./result1106/plot_response.png",
@@ -395,13 +389,6 @@ pred_trunc_worldcup %>%
     count_min = min(expected_count, na.rm = TRUE),
     count_max = max(expected_count, na.rm = TRUE)
   )
-
-
-
-
-
-
-
 
 ### Visualizing the binomial model
 # ----------------------------
@@ -670,3 +657,4 @@ ggexport(plots03, filename = "./result1106/plots_NEW.png",
          pointsize = 12,
 
          res = 300)
+
