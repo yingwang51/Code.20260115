@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-# @Author: dbc
-# @Date: 2024-04-01 22:00:48
-# @Last Modified by: dbc
-# @Last Modified time: 2024-10-21 19:02:55
-# @Description:
 
 # Clear workspace memory
 cat("\014")
@@ -129,6 +124,7 @@ ggexport(pair.plot01, filename = "./2.results/correlation_plot.png",
          height = 2000,
          pointsize = 12,
          res = 300)
+
 
 
 
