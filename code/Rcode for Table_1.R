@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-# @Author: dbc
-# @Date: 2024-04-01 22:00:48
-# @Last Modified by: dbc
-# @Last Modified time: 2025-08-06 11:12:22
 # @Description: Hurdle model——linear relationship
 
 # ==========================================================================
@@ -32,8 +28,7 @@ library(tibble)
 library(lmtest)
 
 # Set working directory (please modify according to your actual path)
-setwd("E:/中国本地植物归化/国内外栽培、原产地与归化强度")
-#setwd("D:/我的坚果云/王颖/数据分析")
+setwd("YOUR_PATH_HERE")
 getwd()
 
 # Create the target directory if it does not exist
@@ -45,8 +40,7 @@ if (!dir.exists(processed_dir)) {
 }
 
 # Load data
-native.flora <- read_csv("E:/中国本地植物归化/国内外栽培、原产地与归化强度/20250530.native_plant.matched.cultivated_plant_DO11.csv", show_col_types = FALSE)
-#  native.flora <- read_csv("D:/我的坚果云/王颖/目前使用代码_数据20250603/主要数据/20250530.native_plant.matched.cultivated_plant_DO11.csv", show_col_types = FALSE)
+native.flora <- read_csv("./data/20250530.native_plant.matched.cultivated_plant_DO11.csv", show_col_types = FALSE)
 
 # Filter and preprocess data
 native.flora01 <- native.flora %>%
@@ -58,7 +52,7 @@ native.flora01 <- native.flora %>%
          life.form.integrated)
 
 native.flora02 <- native.flora01 %>%
-  filter(!is.na(life.form.integrated)) %>% # 去除没有生活型的数据
+  filter(!is.na(life.form.integrated)) %>%
   mutate(life.form.integrated = factor(life.form.integrated, levels = c("annual herb", "perennial herb", "woody")))
 
 str(native.flora02)
@@ -401,6 +395,7 @@ ggexport(plots, filename = "./result1030/Combine_hurdle_linearized.png",
          height = 5500,
          pointsize = 12,
          res = 300)
+
 
 
 
