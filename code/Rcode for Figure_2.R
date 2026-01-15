@@ -136,11 +136,12 @@ sem_models01 <-
   plot_annotation(tag_levels = "A")
 
 sem_models01
-ggexport(sem_models01, filename = "./resutls/sem_models01.png",
+ggexport(sem_models01, filename = "./resutls/Figure.2.png",
          width = 8000,
          height = 3000,
          pointsize = 12,
          res = 300)
+
 
 
 
