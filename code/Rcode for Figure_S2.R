@@ -19,8 +19,7 @@ library(ggraph)
 library(tidygraph)
 library(purrr)
 
-setwd("E:/中国本地植物归化/sem分析")
-#setwd("D:/我的坚果云/王颖/数据分析")
+setwd("YOUR_PATH_HERE")
 getwd()
 
 # ==========================================================================
@@ -156,6 +155,7 @@ ggexport(sem_models01, filename = "./2025.2.results/sem_models01.png",
          height = 3000,
          pointsize = 12,
          res = 300)
+
 
 
 
