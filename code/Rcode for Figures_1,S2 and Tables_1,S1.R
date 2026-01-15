@@ -606,4 +606,519 @@ ggexport(plots03, filename = "./resutls/Figure.1.png",
          res = 300)
 
 
+# ==========================================================================
+# Predicting the isolated effects of life forms
+# ==========================================================================
+life_levels <- levels(native.flora02$life.form.integrated)
+
+# ----------------------------
+# 1. Predicting the life form effect for the Hurdle model
+# ----------------------------
+predict_lifeform_effect <- function(model, data, life_levels) {
+  
+  pred_data <- data.frame(
+    life.form.integrated = factor(life_levels, 
+                                  levels = c("annual herb", "perennial herb", "woody"))
+  )
+  pred_data$scale.native.global.tdwg3 <- mean(data$scale.native.global.tdwg3, na.rm = TRUE)
+  pred_data$scale.WorldCuP.n.tdwg3 <- mean(data$scale.WorldCuP.n.tdwg3, na.rm = TRUE)
+  pred_data$scale.planting.China.tdwg3 <- mean(data$scale.planting.China.tdwg3, na.rm = TRUE)
+  pred_data$response <- predict(model, newdata = pred_data, type = "response")
+  return(pred_data)
+}
+
+# life form effect predictions
+pred_lifeform <- predict_lifeform_effect(model, native.flora02, life_levels)
+pred_lifeform
+
+# ----------------------------
+# 2. Visualisation of the life form effect (Hurdle model)
+# ----------------------------
+theme_standard <- theme_classic(base_size = 20, base_family = "serif") +
+  theme(
+    panel.background = element_rect(fill = "white", colour = NA),
+    plot.background = element_rect(fill = "white", colour = NA),
+    panel.grid = element_blank(),
+    axis.line = element_line(colour = "black", linewidth = 1.5),
+    axis.ticks = element_line(colour = "black", linewidth = 1.5),
+    axis.text = element_text(colour = "black", size = 20),
+    axis.title = element_text(colour = "black", size = 20),
+    legend.title = element_text(size = 20),
+    legend.text = element_text(size = 20),
+    legend.position = "top"
+  )
+## ----------------------------
+plot_lifeform_hurdle <- ggplot(pred_lifeform, 
+                               aes(x = life.form.integrated, 
+                                   y = response, 
+                                   fill = life.form.integrated)) +
+  geom_col(width = 0.6) +
+  scale_fill_manual(
+    values = c("annual herb" = "#E31A1C",
+               "perennial herb" = "#1F78B4",
+               "woody" = "#F8AF66"),
+    name = "Life forms:"
+  ) +
+  labs(x = "Life form", 
+       y = "Naturalization success\n(no. of regions)") +
+  scale_x_discrete(labels = c(
+    "annual herb" = "Annual herb.",
+    "perennial herb" = "Perennial herb.",
+    "woody" = "Woody"
+  )) +
+  scale_y_continuous(limits = c(0, 0.12), breaks = seq(0, 0.12, by = 0.03)) +
+  theme_standard +
+  theme(
+    axis.title.x = element_text(size = 22),
+    axis.title.y = element_text(size = 22),
+    axis.text.x = element_text(size = 20, angle = 0, hjust = 0.5),
+    axis.text.y = element_text(size = 20),
+    legend.position = "none"
+  )
+
+plot_lifeform_hurdle
+
+# ----------------------------
+# 3. Predict life form effects for the separated model
+# ----------------------------
+
+# 3.1 Function to visualize the binomial model
+predict_lifeform_binomial <- function(model, data, life_levels) {
+  pred_data <- data.frame(
+    life.form.integrated = factor(life_levels, 
+                                  levels = c("annual herb", "perennial herb", "woody"))
+  )
+  
+  pred_data$scale.native.global.tdwg3 <- mean(data$scale.native.global.tdwg3, na.rm = TRUE)
+  pred_data$scale.WorldCuP.n.tdwg3 <- mean(data$scale.WorldCuP.n.tdwg3, na.rm = TRUE)
+  pred_data$scale.planting.China.tdwg3 <- mean(data$scale.planting.China.tdwg3, na.rm = TRUE)
+  
+  pred_data$prob_naturalized <- predict(model, newdata = pred_data, type = "response")
+  
+  return(pred_data)
+}
+
+# 3.2 Function to visualize the Zero-truncated negative binomial model
+predict_lifeform_truncnb <- function(model, data, life_levels) {
+  pred_data <- data.frame(
+    life.form.integrated = factor(life_levels, 
+                                  levels = c("annual herb", "perennial herb", "woody"))
+  )
+  
+  pred_data$scale.native.global.tdwg3 <- mean(data$scale.native.global.tdwg3, na.rm = TRUE)
+  pred_data$scale.WorldCuP.n.tdwg3 <- mean(data$scale.WorldCuP.n.tdwg3, na.rm = TRUE)
+  pred_data$scale.planting.China.tdwg3 <- mean(data$scale.planting.China.tdwg3, na.rm = TRUE)
+  
+  pred_data$expected_count <- predict(model, newdata = pred_data, type = "response")
+  
+  return(pred_data)
+}
+
+# predictions
+pred_lifeform_binom <- predict_lifeform_binomial(zero_glm, native.flora02, life_levels)
+pred_lifeform_trunc <- predict_lifeform_truncnb(count_vglm, data_nonzero, life_levels)
+
+# ----------------------------
+# 4. Visualisation of the life form effect in separation models
+# ----------------------------
+# 4.1 Binomial
+plot_lifeform_binom <- ggplot(pred_lifeform_binom, 
+                              aes(x = life.form.integrated, 
+                                  y = prob_naturalized, 
+                                  fill = life.form.integrated)) +
+  geom_col(width = 0.6) +
+  scale_fill_manual(values = color_palette) +
+  labs(x = "Life form", 
+       y = "Naturalization incidence\n(no, yes)") +
+  scale_x_discrete(labels = c(
+    "annual herb" = "Annual herb.",
+    "perennial herb" = "Perennial herb.",
+    "woody" = "Woody"
+  )) +
+  scale_y_continuous(limits = c(0, 0.04), breaks = seq(0, 0.04, 0.01)) +
+  theme_standard +
+  theme(
+    axis.title.x = element_text(size = 22),
+    axis.title.y = element_text(size = 22),
+    axis.text.x = element_text(size = 20),
+    axis.text.y = element_text(size = 20),
+    legend.position = "none"
+  )
+
+# 4.2 Truncated NB 
+plot_lifeform_trunc <- ggplot(pred_lifeform_trunc, 
+                              aes(x = life.form.integrated, 
+                                  y = expected_count, 
+                                  fill = life.form.integrated)) +
+  geom_col(width = 0.6) +
+  scale_fill_manual(values = color_palette) +
+  labs(x = "Life form", 
+       y = "Naturalization extent\n(no. of regions)") +
+  scale_x_discrete(labels = c(
+    "annual herb" = "Annual herb.",
+    "perennial herb" = "Perennial herb.",
+    "woody" = "Woody"
+  )) +
+  scale_y_continuous(limits = c(0, 20), breaks = seq(0, 20, 5)) +
+  theme_standard +
+  theme(
+    axis.title.x = element_text(size = 22),
+    axis.title.y = element_text(size = 22),
+    axis.text.x = element_text(size = 20),
+    axis.text.y = element_text(size = 20),
+    legend.position = "none"
+  )
+
+# ----------------------------
+# 5. combine plots
+# ----------------------------
+
+plots_lifeform_combined <- (
+  plot_lifeform_binom + plot_lifeform_trunc
+) +
+  plot_layout(ncol = 2) +
+  plot_annotation(tag_levels = 'A') &
+  theme(plot.tag = element_text(size = 20, face = "bold"))
+
+plots_lifeform_combined
+
+
+plots_lifeform_combined02 <- (
+  plot_lifeform_hurdle +
+  plot_lifeform_binom + 
+  plot_lifeform_trunc 
+) +
+  plot_layout(ncol = 1) +
+  plot_annotation(tag_levels = 'A') &
+  theme(plot.tag = element_text(size = 20, face = "bold"))
+
+plots_lifeform_combined02
+
+# Save the plot
+ggexport(plots_lifeform_combined02, filename = "./results/Figure.S2.png",
+         width = 2500,
+         height = 5500,
+         pointsize = 12,
+         res = 300)
+
+
+##===============================================================================
+##the likelihood ratio tests(Table.1)
+##===============================================================================
+# ==========================================================================
+# 1. Full model formula
+# ==========================================================================
+formula_full <- as.formula(
+  "nat.extent ~ scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated |
+   scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated"
+)
+
+model_full <- hurdle(formula_full, dist = "negbin", data = native.flora02)
+
+# ==========================================================================
+# 2. Reduced models for Zero part
+# ==========================================================================
+# Remove interaction terms from ZERO part
+formula_zero_no_interaction <- as.formula(
+  "nat.extent ~ scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated |
+   scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated"
+)
+model_zero_no_interaction <- hurdle(formula_zero_no_interaction, dist="negbin", data=native.flora02)
+# Zero: remove native range
+formula_zero_no_nat <- as.formula(
+  "nat.extent ~ scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated |
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated"
+)
+model_zero_no_nat <- hurdle(formula_zero_no_nat, dist="negbin", data=native.flora02)
+
+# Zero: remove WorldCuP
+formula_zero_no_worldcup <- as.formula(
+  "nat.extent ~ scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated |
+   scale.native.global.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated"
+)
+model_zero_no_worldcup <- hurdle(formula_zero_no_worldcup, dist="negbin", data=native.flora02)
+
+# Zero: remove China planting
+formula_zero_no_china <- as.formula(
+  "nat.extent ~ scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated |
+   scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   life.form.integrated"
+)
+model_zero_no_china <- hurdle(formula_zero_no_china, dist="negbin", data=native.flora02)
+
+# Remove each zero part interaction
+formula_zero_no_int1 <- as.formula(
+  "nat.extent ~ scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated |
+   scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated"
+)
+formula_zero_no_int2 <- as.formula(
+  "nat.extent ~ scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated |
+   scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+
+   scale.planting.China.tdwg3:life.form.integrated"
+)
+formula_zero_no_int3 <- as.formula(
+  "nat.extent ~ scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated |
+   scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated"
+)
+
+model_zero_no_int1 <- hurdle(formula_zero_no_int1, dist="negbin", data=native.flora02)
+model_zero_no_int2 <- hurdle(formula_zero_no_int2, dist="negbin", data=native.flora02)
+model_zero_no_int3 <- hurdle(formula_zero_no_int3, dist="negbin", data=native.flora02)
+
+# Remove life.form.integrated from ZERO part
+formula_zero_no_life <- as.formula(
+  "nat.extent ~ scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated |
+   scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3"
+)
+model_zero_no_life <- hurdle(formula_zero_no_life, dist="negbin", data=native.flora02)
+
+# ==========================================================================
+# 3. Reduced models for Count part
+# ==========================================================================
+# Remove interaction terms from COUNT part
+formula_count_no_interaction <- as.formula(
+  "nat.extent ~ scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated |
+   scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated"
+)
+model_count_no_interaction <- hurdle(formula_count_no_interaction, dist="negbin", data=native.flora02)
+
+# Count: remove native range
+formula_count_no_nat <- as.formula(
+  "nat.extent ~ 
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated |
+   scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated"
+)
+model_count_no_nat <- hurdle(formula_count_no_nat, dist="negbin", data=native.flora02)
+
+# Count: remove WorldCuP
+formula_count_no_worldcup <- as.formula(
+  "nat.extent ~ scale.native.global.tdwg3 +
+
+   scale.planting.China.tdwg3 +
+   life.form.integrated |
+   scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated"
+)
+model_count_no_worldcup <- hurdle(formula_count_no_worldcup, dist="negbin", data=native.flora02)
+
+# Count: remove China planting
+formula_count_no_china <- as.formula(
+  "nat.extent ~ scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+
+   life.form.integrated |
+   scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated"
+)
+model_count_no_china <- hurdle(formula_count_no_china, dist="negbin", data=native.flora02)
+
+# Remove each count interaction
+formula_count_no_int1 <- as.formula(
+  "nat.extent ~ scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated |
+   scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated"
+)
+formula_count_no_int2 <- as.formula(
+  "nat.extent ~ scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+
+   scale.planting.China.tdwg3:life.form.integrated |
+   scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated"
+)
+formula_count_no_int3 <- as.formula(
+  "nat.extent ~ scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated |
+   scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated"
+)
+model_count_no_int1 <- hurdle(formula_count_no_int1, dist="negbin", data=native.flora02)
+model_count_no_int2 <- hurdle(formula_count_no_int2, dist="negbin", data=native.flora02)
+model_count_no_int3 <- hurdle(formula_count_no_int3, dist="negbin", data=native.flora02)
+
+# Remove life.form.integrated from count
+formula_count_no_life <- as.formula(
+  "nat.extent ~ scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3|
+   scale.native.global.tdwg3 +
+   scale.WorldCuP.n.tdwg3 +
+   scale.planting.China.tdwg3 +
+   life.form.integrated +
+   scale.native.global.tdwg3:life.form.integrated +
+   scale.WorldCuP.n.tdwg3:life.form.integrated +
+   scale.planting.China.tdwg3:life.form.integrated"
+)
+model_count_no_life <- hurdle(formula_count_no_life, dist="negbin", data=native.flora02)
+
+# ==========================================================================
+# 4. Compile LR test results
+# ==========================================================================
+results_list <- list(
+  "Zero: NatRange" = tidy(lmtest::lrtest(model_zero_no_interaction, model_zero_no_nat)),
+  "Zero: WorldCuP" = tidy(lmtest::lrtest(model_zero_no_interaction, model_zero_no_worldcup)),
+  "Zero: ChinaPlant" = tidy(lmtest::lrtest(model_zero_no_interaction, model_zero_no_china)),
+  
+  "Zero: NatRange × Life"  = tidy(lmtest::lrtest(model_full, model_zero_no_int1)),
+  "Zero: WorldCuP × Life"  = tidy(lmtest::lrtest(model_full, model_zero_no_int2)),
+  "Zero: ChinaPlant × Life" = tidy(lmtest::lrtest(model_full, model_zero_no_int3)),
+  
+  "Zero: Life Form" = tidy(lmtest::lrtest(model_zero_no_interaction, model_zero_no_life)),
+  
+  "Count: NatRange" = tidy(lmtest::lrtest(model_count_no_interaction, model_count_no_nat)),
+  "Count: WorldCuP" = tidy(lmtest::lrtest(model_count_no_interaction, model_count_no_worldcup)),
+  "Count: ChinaPlant" = tidy(lmtest::lrtest(model_count_no_interaction, model_count_no_china)),
+  
+  "Count: NatRange × Life"  = tidy(lmtest::lrtest(model_full, model_count_no_int1)),
+  "Count: WorldCuP × Life"  = tidy(lmtest::lrtest(model_full, model_count_no_int2)),
+  "Count: ChinaPlant × Life" = tidy(lmtest::lrtest(model_full, model_count_no_int3)),
+  
+  "Count: Life Form" = tidy(lmtest::lrtest(model_count_no_interaction, model_count_no_life))
+)
+
+native_hurdle_LRT <- bind_rows(results_list,.id = "Test")
+print(native_hurdle_LRT)
+
+write_csv(native_hurdle_LRT, "./resultS/Table.1.csv")
+
 
