@@ -271,7 +271,7 @@ p <- ggplot(
 p
 
 # Export the plot
-ggexport(p, filename = "./resutls/Posterior estimatel.png",
+ggexport(p, filename = "./resutls/Figure.S4.png",
          width = 1800,
          height = 4200,
          pointsize = 12,
@@ -378,10 +378,11 @@ model_nat.tidy02 <- rbind(model_naturalized.global.tidy02,
                           b.model_naturalized.global.tidy02,
                           c.model_naturalized.global.tidy02)
 
-write_csv(model_nat.tidy02, "./resutls/model_nat.tidy02.v202501.csv")
+write_csv(model_nat.tidy02, "./resutls/Table.S2.csv")
 
 
 
                         
+
 
 
