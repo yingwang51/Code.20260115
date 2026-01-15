@@ -107,6 +107,7 @@ result_all <- bind_rows(result_count, result_zero)
 write_csv(result_all, "./resutls/Table.S1.csv")
 
 # ==========================================================================
+# Figure.1
 # The binomial model (zero part)
 # The zero truncated negative binomial model
 # ==========================================================================
@@ -250,17 +251,6 @@ plot_response_native <- plots_native$response
 plot_response_china <- plots_china$response
 plot_response_worldcup <- plots_worldcup$response
 
-
-plots02 <- (
-  plot_response_native +
-    plot_response_china +
-    plot_response_worldcup
-) +
-  plot_layout(ncol = 1, guides = "collect") +
-  plot_annotation(tag_levels = 'A') &
-  theme(legend.position = "top")
-plots02
-
 #  Add inset plots to the response panels
 plot_add_parts01 <- function(pred_data, x_var) {
   
@@ -305,45 +295,6 @@ plot_response_worldcup02 <- plot_response_worldcup +
                     xmin = -1, xmax = 1,  
                     ymin = 120, ymax = 220)
 
-# Combine plots
-plots04 <-
-  plot_response_native02 +
-  plot_response_china02 +
-  plot_response_worldcup02 +
-  plot_layout(ncol = 1, guides = "collect") +
-  plot_annotation(tag_levels = "A") &
-  theme(legend.position = "top") &
-  scale_color_manual(
-    values = c("annual herb" = "#E31A1C",
-               "perennial herb" = "#1F78B4",
-               "woody" = "#F8AF66"),
-    name = "Life forms:",
-    labels = c("annual herb" = "Annual herb.",
-               "perennial herb" = "Perennial herb.",
-               "woody" = "Woody")
-  )
-
-## Check prediction data ranges
-pred_trunc_native %>%
-  group_by(life.form.integrated) %>%
-  summarise(
-    count_min = min(expected_count, na.rm = TRUE),
-    count_max = max(expected_count, na.rm = TRUE)
-  )
-
-pred_trunc_china %>%
-  group_by(life.form.integrated) %>%
-  summarise(
-    count_min = min(expected_count, na.rm = TRUE),
-    count_max = max(expected_count, na.rm = TRUE)
-  )
-
-pred_trunc_worldcup %>%
-  group_by(life.form.integrated) %>%
-  summarise(
-    count_min = min(expected_count, na.rm = TRUE),
-    count_max = max(expected_count, na.rm = TRUE)
-  )
 
 ### Visualizing the binomial model
 # ----------------------------
@@ -413,20 +364,6 @@ plot_binom_native   <- plot_binomial_parts(pred_binom_native, observed_data, "sc
 plot_binom_worldcup <- plot_binomial_parts(pred_binom_worldcup, observed_data, "scale.WorldCuP.n.tdwg3", "Log(cultivation outside China + 1) (scaled)")
 plot_binom_china    <- plot_binomial_parts(pred_binom_china, observed_data, "scale.planting.China.tdwg3", "Log(cultivation within China + 1) (scaled)")
 
-# ----------------------------
-# 3. Combine plots
-# ----------------------------
-
-plots_binomial <- (
-  plot_binom_native +
-    plot_binom_china +
-    plot_binom_worldcup
-) +
-  plot_layout(ncol = 1, guides = "collect") +
-  plot_annotation(tag_levels = 'A') &
-  theme(legend.position = "top")
-
-plots_binomial
 
 ### Visualizing the zero-truncated negative binomial model
 # ----------------------------
@@ -492,18 +429,6 @@ plot_truncnegbin_parts <- function(pred_data, observed_data, x_var, x_label) {
 plot_trunc_native   <- plot_truncnegbin_parts(pred_trunc_native, observed_data, "scale.native.global.tdwg3", "Log(native range size + 1) (scaled)")
 plot_trunc_worldcup <- plot_truncnegbin_parts(pred_trunc_worldcup, observed_data, "scale.WorldCuP.n.tdwg3", "Log(cultivation outside China + 1) (scaled)")
 plot_trunc_china    <- plot_truncnegbin_parts(pred_trunc_china, observed_data, "scale.planting.China.tdwg3", "Log(cultivation within China + 1) (scaled)")
-
-# Combine the three plots
-plots_trunc <- (
-  plot_trunc_native +
-    plot_trunc_china +
-    plot_trunc_worldcup
-) +
-  plot_layout(ncol = 1, guides = "collect") +
-  plot_annotation(tag_levels = 'A') &
-  theme(legend.position = "top")
-
-plots_trunc
 
 # ----------------------------
 # 3. Add inset (zoomed subplots)
@@ -577,7 +502,7 @@ plot_trunc_worldcup02 <- plot_trunc_worldcup +
 # 4. Combine binomial and truncated model plots
 # ----------------------------
 
-plots03 <-
+plots <-
   plot_binom_native +
   plot_trunc_native02 +
   plot_binom_china02 +
@@ -596,10 +521,9 @@ plots03 <-
                "perennial herb" = "Perennial herb.",
                "woody" = "Woody")
   )
-
-plots03
+plots
 # Save the plot
-ggexport(plots03, filename = "./resutls/Figure.1.png",
+ggexport(plots, filename = "./resutls/Figure.1.png",
          width = 4200,
          height = 5500,
          pointsize = 12,
@@ -607,7 +531,8 @@ ggexport(plots03, filename = "./resutls/Figure.1.png",
 
 
 # ==========================================================================
-# Predicting the isolated effects of life forms
+# Figure.S2
+# Predicting the isolated effects of life forms 
 # ==========================================================================
 life_levels <- levels(native.flora02$life.form.integrated)
 
@@ -802,9 +727,10 @@ ggexport(plots_lifeform_combined02, filename = "./results/Figure.S2.png",
          res = 300)
 
 
-##===============================================================================
-##the likelihood ratio tests(Table.1)
-##===============================================================================
+#===============================================================================
+# Table.1
+# The likelihood ratio tests(Table.1)
+# ===============================================================================
 # ==========================================================================
 # 1. Full model formula
 # ==========================================================================
@@ -1120,5 +1046,6 @@ native_hurdle_LRT <- bind_rows(results_list,.id = "Test")
 print(native_hurdle_LRT)
 
 write_csv(native_hurdle_LRT, "./resultS/Table.1.csv")
+
 
 
