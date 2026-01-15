@@ -104,14 +104,12 @@ result_zero <- as.data.frame(summary_model$coefficients$zero) %>%
 # Combine both parts
 result_all <- bind_rows(result_count, result_zero)
 
-write_csv(result_all, "./resutls/result_all.csv")
+write_csv(result_all, "./resutls/Table.S1.csv")
 
 # ==========================================================================
 # The binomial model (zero part)
 # The zero truncated negative binomial model
 # ==========================================================================
-
-
 # Model formula
 formula <- as.formula(nat.extent ~
                         scale.native.global.tdwg3 + scale.WorldCuP.n.tdwg3 + scale.planting.China.tdwg3 + life.form.integrated +
@@ -126,32 +124,6 @@ summary(zero_glm)
 data_nonzero <- subset(native.flora02, nat.extent > 0)
 count_vglm <- vglm(formula, data = data_nonzero, family = posnegbinomial)
 summary(count_vglm)
-
-# ---- Binomial model ----
-zero_tidy <- tidy(zero_glm) %>%
-  mutate(model = "Binomial (zero part)")
-
-# ---- Truncated negative binomial model ----
-# Extract coefficients and standard errors from vglm
-coef_mat <- coef(summary(count_vglm))
-
-# Construct tidy-style dataframe
-count_tidy <- as.data.frame(coef_mat) %>%
-  tibble::rownames_to_column("term") %>%
-  rename(estimate = Estimate,
-         std.error = `Std. Error`,
-         statistic = `z value`,
-         p.value = `Pr(>|z|)`) %>%
-  mutate(model = "Zero-truncated NB (count part)")
-
-
-# ---- Combine results ----
-tidy_results <- bind_rows(zero_tidy, count_tidy) %>%
-  select(model,  term, estimate, std.error, statistic, p.value)
-
-# ---- View results ----
-tidy_results
-write_csv(tidy_results, "./result1106/result_all.csv")
 
 # Extract life.form levels
 life_levels <- levels(native.flora02$life.form.integrated)
@@ -287,15 +259,7 @@ plots02 <- (
   plot_layout(ncol = 1, guides = "collect") +
   plot_annotation(tag_levels = 'A') &
   theme(legend.position = "top")
-
 plots02
-
-ggexport(plots02, filename = "./resutls/plots02.png",
-         width = 2500,
-         height = 5000,
-         pointsize = 12,
-         res = 300)
-
 
 #  Add inset plots to the response panels
 plot_add_parts01 <- function(pred_data, x_var) {
@@ -358,15 +322,6 @@ plots04 <-
                "perennial herb" = "Perennial herb.",
                "woody" = "Woody")
   )
-
-# Save the plot
-ggexport(plots04, filename = "./resutls/plot_response.png",
-         width = 2500,
-         height = 6000,
-         pointsize = 12,
-         res = 300)
-
-
 
 ## Check prediction data ranges
 pred_trunc_native %>%
@@ -473,10 +428,6 @@ plots_binomial <- (
 
 plots_binomial
 
-
-
-
-
 ### Visualizing the zero-truncated negative binomial model
 # ----------------------------
 # 1. Zero-truncated negative binomial model visualization function
@@ -579,9 +530,6 @@ plot_binom_china02 <- plot_binom_china +
                     xmin = -1.5, xmax = 0.6,  
                     ymin = 0.4, ymax = 0.95)
 
-
-
-
 # Function to generate zoomed subplots for truncated models
 plot_add_parts <- function(pred_data, observed_data, x_var) {
   
@@ -651,11 +599,11 @@ plots03 <-
 
 plots03
 # Save the plot
-ggexport(plots03, filename = "./resutls/plots_NEW.png",
+ggexport(plots03, filename = "./resutls/Figure.1.png",
          width = 4200,
          height = 5500,
          pointsize = 12,
-
          res = 300)
+
 
 
