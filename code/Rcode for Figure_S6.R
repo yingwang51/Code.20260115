@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Clear workspace memory
 cat("\014")
 rm(list = ls())
@@ -37,7 +36,6 @@ native.species <- native.species00 %>%
          WorldCuP.n.tdwg3,
          native.global.tdwg3,
          life.form.integrated)
-
 
 # ==========================================================================
 # check data range
@@ -111,19 +109,16 @@ pair.plot01 <- pair.plot +
         strip.text = element_text(family = "serif", colour = "black", size = 12),
         axis.title = element_text(family = "serif", colour = "black", size = 12)) 
 
-# +
-#   scale_x_continuous(limits = c(-2, 4),  
-#                     breaks = seq(-2, 4, by = 2))
-
 pair.plot01
 
 # Export correlation plot to file
 library(ggpubr)
-ggexport(pair.plot01, filename = "./resutls/correlation_plot.png",
+ggexport(pair.plot01, filename = "./resutls/Figure_S6.png",
          width = 2000,
          height = 2000,
          pointsize = 12,
          res = 300)
+
 
 
 
