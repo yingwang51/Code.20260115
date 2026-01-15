@@ -107,7 +107,6 @@ native_range_seq <- seq(
   length.out = 100
 )
 
-
 # Create a data frame for predictions
 pred_data_native <- expand.grid(
   scale.native.global.tdwg3 = native_range_seq,
@@ -117,7 +116,6 @@ pred_data_native <- expand.grid(
 # Hold other continuous variables at their mean values
 pred_data_native$scale.WorldCuP.n.tdwg3   <- mean(native.flora02$scale.WorldCuP.n.tdwg3, na.rm = TRUE)
 pred_data_native$scale.planting.China.tdwg3 <- mean(native.flora02$scale.planting.China.tdwg3, na.rm = TRUE)
-
 
 
 # Extract design matrices for both model components (Zero and Count)
@@ -158,7 +156,6 @@ plot_native_linear_zero <- ggplot(pred_data_native,
         legend.text = element_text(size = 20)) +
   theme(legend.position = "none")
 
-
 # Plot B: Count component (Linear Predictors)
 plot_native_linear_count <- ggplot(pred_data_native, 
                                    aes(x = scale.native.global.tdwg3, 
@@ -184,10 +181,6 @@ combined_plot_lineart_native <- plot_native_linear_zero + plot_native_linear_cou
   theme(legend.position = "bottom")
 
 combined_plot_lineart_native
-
-
-
-
 
 ##=================================================================================
 # Analyze scale.WorldCuP.n.tdwg3 (cultivation range outside China)
@@ -272,8 +265,6 @@ combined_plot_linea_worldcup <- plot_worldcup_linear_zero + plot_worldcup_linear
   theme(legend.position = "bottom")
 
 combined_plot_linea_worldcup
-
-
 
 ##=================================================================================
 # Analyze scale.planting.China.tdwg3 (cultivation range within China)
@@ -361,8 +352,6 @@ combined_plot_linear_china <- plot_china_linear_zero + plot_china_linear_count +
 
 combined_plot_linear_china
 
-
-
 # ==========================================================================
 # combined all plots
 # ==========================================================================
@@ -390,11 +379,12 @@ plots
 
 
 # Save the plot
-ggexport(plots, filename = "./result1030/Combine_hurdle_linearized.png",
+ggexport(plots, filename = "./resutls/Combine_hurdle_linearized.png",
          width = 3800,
          height = 5500,
          pointsize = 12,
          res = 300)
+
 
 
 
