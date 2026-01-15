@@ -1,10 +1,4 @@
 # --------------------------------------------------------------------------#
-# -*- coding: utf-8 -*-
-# @Author: Bicheng Dong
-# @Date: 2023-03-11 17:06:43
-# @Last Modified by: dbc
-# @Last Modified time: 2024-05-09 08:37:04
-# @Description: SEM PLOTS
 # --------------------------------------------------------------------------#
 # Clear workspace memory
 cat("\014")
@@ -19,8 +13,7 @@ library(ggraph)
 library(tidygraph)
 library(purrr)
 
-setwd("E:/中国本地植物归化/sem分析")
-#setwd("D:/我的坚果云/王颖/数据分析")
+setwd("YOUR_PATH_HERE")
 getwd()
 
 # ==========================================================================
@@ -156,6 +149,7 @@ ggexport(sem_models01, filename = "./2025.2.results/sem_models01.png",
          height = 3000,
          pointsize = 12,
          res = 300)
+
 
 
 
