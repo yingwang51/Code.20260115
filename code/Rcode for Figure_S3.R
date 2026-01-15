@@ -379,11 +379,12 @@ plots
 
 
 # Save the plot
-ggexport(plots, filename = "./resutls/Combine_hurdle_linearized.png",
+ggexport(plots, filename = "./resutls/Figure.S3.png",
          width = 3800,
          height = 5500,
          pointsize = 12,
          res = 300)
+
 
 
 
