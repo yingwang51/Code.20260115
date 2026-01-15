@@ -26,7 +26,7 @@ library(tibble)
 library(lmtest)
 library(VGAM)
 # Set working directory (please modify according to your actual path)
-setwd("E:/中国本地植物归化/国内外栽培、原产地与归化强度")
+setwd("YOUR_PATH_HERE")
 getwd()
 
 # Create the target directory if it does not exist
@@ -38,7 +38,7 @@ if (!dir.exists(processed_dir)) {
 }
 
 # Load data
-native.flora <- read_csv("E:/中国本地植物归化/国内外栽培、原产地与归化强度/20250530.native_plant.matched.cultivated_plant_DO11.csv", show_col_types = FALSE)
+native.flora <- read_csv("./data/20250530.native_plant.matched.cultivated_plant_DO11.csv", show_col_types = FALSE)
 
 # Filter and preprocess data
 native.flora01 <- native.flora %>%
@@ -668,4 +668,5 @@ ggexport(plots03, filename = "./result1106/plots_NEW.png",
          width = 4200,
          height = 5500,
          pointsize = 12,
+
          res = 300)
