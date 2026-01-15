@@ -14,15 +14,14 @@ library(scatterpie)
 library(RColorBrewer) 
 
 # Set the working directory
-setwd("E:/中国本地植物归化/世界地图")
-# setwd("D:/我的坚果云/王颖")
+setwd("YOUR_PATH_HERE")
 getwd()
 
 # ==========================================================================
 # Data Processing
 # ==========================================================================
 # Import Data
-native.flora <- read_csv("E:/中国本地植物归化/世界地图/20250530.native_plant.matched.cultivated_plant_DO11.csv", locale = locale(encoding = "UTF-8"), show_col_types = FALSE)
+native.flora <- read_csv("./data/20250530.native_plant.matched.cultivated_plant_DO11.csv", locale = locale(encoding = "UTF-8"), show_col_types = FALSE)
 
 # Filter data
 # 2024-06-18
@@ -44,13 +43,11 @@ nrow(native.flora01)
 native.flora02 <- native.flora01 %>%
   filter(cultivation.lin2019 %in% c("yes", "no")) %>%
   mutate(cultivation.lin2019 = factor(cultivation.lin2019, levels = c("no", "yes")))%>%
-  filter(!is.na(life.form.integrated)) #去除没有性状的数据
-
+  filter(!is.na(life.form.integrated))
 str(native.flora02)
 levels(native.flora02$cultivation.lin2019)
 # skimr::skim(native.flora02)
 #--------------------------------------------------------------
-
 
 native.flora02a <- native.flora02 %>%
 pivot_longer(cols = ABT:ZIM, names_to = "tdwg_lvl03", values_to = "value") %>%
@@ -101,18 +98,13 @@ res_an <- get_log_summary(native.flora03_an)
 res_pe <- get_log_summary(native.flora03_pe)
 res_wo <- get_log_summary(native.flora03_wo)
 
-
 # ==========================================================================
 # plots
 # ==========================================================================
 # Define file paths
-#tdwg_lvl01_path <- "D:/我的坚果云/王颖/R_codes_for_nat.pla_in.China/data/tdwg_map/level1/level1.shp"
-#china_map_path <- "D:/我的坚果云/王颖/R_codes_for_nat.pla_in.China/data/China_map/bou2_4p.shp"
-#southsea_path <- "D:/我的坚果云/王颖/R_codes_for_nat.pla_in.China/data/China_map/south_sea.shp"
-
-tdwg_lvl03_path <- "E:/中国本地植物归化/世界地图/data/tdwg_map/level3/level3.shp"
-china_map_path <- "E:/中国本地植物归化/世界地图/data/China_map/bou2_4p.shp"
-southsea_path <- "E:/中国本地植物归化/世界地图/data/China_map/south_sea.shp"
+tdwg_lvl03_path <- "./data/level3/level3.shp"
+china_map_path <- "./data/China_map/bou2_4p.shp"
+southsea_path <- "./data/China_map/south_sea.shp"
 
 # Load maps using sf
 tdwg_lvl03_map <- read_sf(tdwg_lvl03_path)
@@ -170,14 +162,14 @@ tdwg_map_plot01A <- ggplot(data = tdwg_lvl03_map_df02a) +
   guides(
     fill = guide_colorbar(
       title = NULL,
-      barwidth = 0.5,   # 颜色条宽度
-      barheight = 5,    # 颜色条高度
+      barwidth = 0.5,   
+      barheight = 5,    
       title.position = "top",
       label.position = "right"
     )
   ) +
   theme(
-    legend.position = c(0.11, 0.3),  # 图例位置可调整
+    legend.position = c(0.11, 0.3), 
     legend.direction = "vertical",
     legend.title = element_text(size = 10),
     legend.text = element_text(size = 8)
@@ -206,14 +198,14 @@ tdwg_map_plot01B <- ggplot(data = tdwg_lvl03_map_df02b) +
   guides(
     fill = guide_colorbar(
       title = NULL,
-      barwidth = 0.5,   # 颜色条宽度
-      barheight = 5,    # 颜色条高度
+      barwidth = 0.5,   
+      barheight = 5,    
       title.position = "top",
       label.position = "right"
     )
   ) +
   theme(
-    legend.position = c(0.11, 0.3),  # 图例位置可调整
+    legend.position = c(0.11, 0.3), 
     legend.direction = "vertical",
     legend.title = element_text(size = 10),
     legend.text = element_text(size = 8)
@@ -259,9 +251,9 @@ tdwg_map_plot01C
 # life forms
 # ==========================================================================
 library(cowplot)
-a.img_path <- "E:/中国本地植物归化/世界地图/图片/拟南芥.png"
-b.img_path <- "E:/中国本地植物归化/世界地图/图片/人参.png"
-c.img_path <- "E:/中国本地植物归化/世界地图/图片/木本.png"
+a.img_path <- "annual.png"
+b.img_path <- "perennial.png"
+c.img_path <- "woody.png"
 
 tdwg_map_plot11A <- ggdraw(tdwg_map_plot01A) +
   draw_image(a.img_path,
@@ -282,9 +274,6 @@ tdwg_map_plot11C <- ggdraw(tdwg_map_plot01C) +
              width = 0.25, height = 0.25, 
              hjust = 0.5, vjust = 0)
 
-
-
-##combine figures
 
 custom_labels <- c(
   "(A) Annual herbs", 
