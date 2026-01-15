@@ -1,18 +1,3 @@
-#--------------------------------------------------------------------------#
-#     .______.
-#   __| _/\_ |__    ____
-#  / __ |  | __ \ _/ ___\
-# / /_/ |  | \_\ \\  \___
-# \____ |  |___  / \___  >
-#      \/      \/      \/
-#
-# -*- coding: utf-8 -*-
-# @Author: Bicheng Dong
-# @Date: 2023-03-11 17:06:43
-# @Last Modified by:   bcdon
-# @Last Modified time: 2024-05-08 13:56:24
-# @Description: SEM
-
 # ==========================================================================
 # 1. Environment Setup and Data Preparation
 # ==========================================================================
@@ -34,13 +19,11 @@ library(glue)
 library(piecewiseSEM)
 
 # Set working directory
-setwd("E:/中国本地植物归化/sem分析")
-#setwd("D:/我的坚果云/王颖/数据分析")
+setwd("YOUR_PATH_HERE")
 getwd()
 
 # Load native species dataset
-native.species00 <- read_csv("E:/中国本地植物归化/sem分析/20250530.native_plant.matched.cultivated_plant_DO11.csv", show_col_types = FALSE)
-#native.species00 <- read_csv("D:/我的坚果云/王颖/数据分析/2024.10.19.native_plant.matched.cultivated_plant_range.csv", show_col_types = FALSE)
+native.species00 <- read_csv("./data/20250530.native_plant.matched.cultivated_plant_DO11.csv", show_col_types = FALSE)
 str(native.species00)
 
 # Standardize and log-transform variables for the whole dataset
@@ -400,3 +383,4 @@ write_csv(model_nat.tidy02, "./2025.2.results/model_nat.tidy02.v202501.csv")
 
 
                         
+
