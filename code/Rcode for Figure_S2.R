@@ -1,9 +1,5 @@
 # --------------------------------------------------------------------------#
 # -*- coding: utf-8 -*-
-# @Author: Bicheng Dong
-# @Date: 2023-03-11 17:06:43
-# @Last Modified by: dbc
-# @Last Modified time: 2024-05-09 08:37:04
 # @Description: SEM PLOTS
 # --------------------------------------------------------------------------#
 # Clear workspace memory
@@ -155,6 +151,7 @@ ggexport(sem_models01, filename = "./2025.2.results/sem_models01.png",
          height = 3000,
          pointsize = 12,
          res = 300)
+
 
 
 
