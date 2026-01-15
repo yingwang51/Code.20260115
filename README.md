@@ -55,22 +55,29 @@
 ### code
 
 **1.Rcode for Figure_2.R**
+
 #Visualisation of BSEM analysis
 
 **2.Rcode for Figure_S1.R**
+
 #The distribution of naturalized plant species that are native to China across TDWG level-3 regions, separately for each life form (annual herbaceous, perennial herbaceous, and woody)
 
 **3.Rcode for Figure_S3.R**
+
 #Linearized relationships from Hurdle Models
 
 **4.Rcode for Figure_S4 and Table_S2.R**
+
 #BSEM analysis and posterior distributions of pathway-specific effects estimated from BSEMs
 
 **5.Rcode for Figure_S6.R**
-#Log-transformed and standardized variables correlation analysis (Native Range Size, Cultivation within/outside China)
+
+#correlation analysis (Native Range Size, Cultivation within/outside China)
 
 **6.Rcode for Figures_1,S2 and Table_S1.R**
+
 #Hurdle model analyse
+
 
 
 
