@@ -67,12 +67,11 @@
 #BSEM analysis and posterior distributions of pathway-specific effects estimated from BSEMs
 
 **5.Rcode for Figure_S6.R**
-
 #Log-transformed and standardized variables correlation analysis (Native Range Size, Cultivation within/outside China)
 
 **6.Rcode for Figures_1,S2 and Table_S1.R**
-
 #Hurdle model analyse
+
 
 
 
