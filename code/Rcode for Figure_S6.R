@@ -119,11 +119,12 @@ pair.plot01
 
 # Export correlation plot to file
 library(ggpubr)
-ggexport(pair.plot01, filename = "./2.results/correlation_plot.png",
+ggexport(pair.plot01, filename = "./resutls/correlation_plot.png",
          width = 2000,
          height = 2000,
          pointsize = 12,
          res = 300)
+
 
 
 
