@@ -287,7 +287,7 @@ combined_maps <- tdwg_map_plot11A +
                  plot_annotation(tag_levels = list(custom_labels))
 
 combined_maps
-ggexport(combined_maps, filename = "./results/20250612combined_maps.png",
+ggexport(combined_maps, filename = "./results/figure.S1.png",
          width = 2500,
          height = 3600,
          pointsize = 12,
