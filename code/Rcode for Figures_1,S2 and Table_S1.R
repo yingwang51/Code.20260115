@@ -104,7 +104,7 @@ result_zero <- as.data.frame(summary_model$coefficients$zero) %>%
 # Combine both parts
 result_all <- bind_rows(result_count, result_zero)
 
-write_csv(result_all, "./result1030/result_all.csv")
+write_csv(result_all, "./resutls/result_all.csv")
 
 # ==========================================================================
 # The binomial model (zero part)
@@ -290,7 +290,7 @@ plots02 <- (
 
 plots02
 
-ggexport(plots02, filename = "./result1106/plots02.png",
+ggexport(plots02, filename = "./resutls/plots02.png",
          width = 2500,
          height = 5000,
          pointsize = 12,
@@ -360,7 +360,7 @@ plots04 <-
   )
 
 # Save the plot
-ggexport(plots04, filename = "./result1106/plot_response.png",
+ggexport(plots04, filename = "./resutls/plot_response.png",
          width = 2500,
          height = 6000,
          pointsize = 12,
@@ -651,10 +651,11 @@ plots03 <-
 
 plots03
 # Save the plot
-ggexport(plots03, filename = "./result1106/plots_NEW.png",
+ggexport(plots03, filename = "./resutls/plots_NEW.png",
          width = 4200,
          height = 5500,
          pointsize = 12,
 
          res = 300)
+
 
