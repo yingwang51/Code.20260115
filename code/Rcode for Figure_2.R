@@ -75,7 +75,7 @@ return(sem.plot)
 # ==========================================================================
 # Loading naturalization data
 # ==========================================================================
-model_nat <- read.csv("./2025.2.results/model_nat.tidy02.v202501.csv")
+model_nat <- read.csv("./resutls/model_nat.tidy02.v202501.csv")
 model_nat
 
 #
@@ -129,7 +129,7 @@ library(ggpubr)
 
 #all_sp
 sem_models.nat.all_sp
-ggexport(sem_models.nat.all_sp, filename = "./2025.2.results/sem_models.nat.all_sp.png",
+ggexport(sem_models.nat.all_sp, filename = "./resutls/sem_models.nat.all_sp.png",
          width = 4000,
          height = 3000,
          pointsize = 12,
@@ -144,11 +144,12 @@ sem_models01 <-
   plot_annotation(tag_levels = "A")
 
 sem_models01
-ggexport(sem_models01, filename = "./2025.2.results/sem_models01.png",
+ggexport(sem_models01, filename = "./resutls/sem_models01.png",
          width = 8000,
          height = 3000,
          pointsize = 12,
          res = 300)
+
 
 
 
