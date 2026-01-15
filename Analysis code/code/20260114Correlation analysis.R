@@ -27,13 +27,11 @@ library(tibble)
 library(AER)
 
 # Set working directory
-setwd("E:/中国本地植物归化/国内外栽培、原产地与归化强度")
-#setwd("D:/我的坚果云/王颖/数据分析")
+setwd("YOUR_PATH_HERE")
 getwd()
 
 # Load native species dataset
-native.species00 <- read_csv("E:/中国本地植物归化/国内外栽培、原产地与归化强度/20250530.native_plant.matched.cultivated_plant_DO11.csv", show_col_types = FALSE)
-#native.species00 <- read_csv("D:/我的坚果云/王颖/数据分析/2024.10.19.native_plant.matched.cultivated_plant_range.csv", show_col_types = FALSE)
+native.species00 <- read_csv("./data/20250530.native_plant.matched.cultivated_plant_DO11.csv", show_col_types = FALSE)
 str(native.species00)
 
 # Select relevant variables for analysis
@@ -131,6 +129,7 @@ ggexport(pair.plot01, filename = "./2.results/correlation_plot.png",
          height = 2000,
          pointsize = 12,
          res = 300)
+
 
 
 
